@@ -30,8 +30,10 @@ struct EventsView: View {
                         EventRow(event: event)
                     }
                 }
+                .onDelete { indexSet in
+                    events.remove(atOffsets: indexSet)
+                }
             }
-            .navigationTitle("Events")
             .toolbar {
                 Button {
                     path.append(Destination.addEvent)
@@ -39,6 +41,7 @@ struct EventsView: View {
                     Image(systemName: "plus")
                 }
             }
+            .navigationTitle("Events")
             .navigationDestination(for: Destination.self) { destination in
                 switch destination {
                 case .addEvent:

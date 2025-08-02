@@ -60,7 +60,13 @@ struct EventForm: View {
         guard !title.trimmingCharacters(in: .whitespaces).isEmpty else { return }
         
         let event = Event(id: event?.id ?? UUID(), title: title, date: date, textColor: textColor)
-        events.append(event)
+        
+        if let existingEvent = self.event,
+           let index = events.firstIndex(of: existingEvent) {
+            events[index] = event
+        } else {
+            events.append(event)
+        }
         
         dismiss()
     }

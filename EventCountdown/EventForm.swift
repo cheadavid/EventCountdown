@@ -19,25 +19,31 @@ struct EventForm: View {
     
     // MARK: - States
     
-    @State private var title = ""
-    @State private var date = Date()
-    @State private var textColor = Color.red
+    @State private var event: Event
     
-    // MARK: - Properties
+    // MARK: - Initializers
     
-    let event: Event?
+    init(events: Binding<[Event]>, event: Event?) {
+        _events = events
+        
+        if let event = event {
+            _event = State(initialValue: event)
+        } else {
+            _event = State(initialValue: Event(title: "", date: Date(), textColor: .red))
+        }
+    }
     
     // MARK: - Body
     
     var body: some View {
         Form {
             Section {
-                TextField("Title", text: $title)
-                DatePicker("Date", selection: $date)
-                ColorPicker("Text Color", selection: $textColor)
+                TextField("Title", text: $event.title)
+                DatePicker("Date", selection: $event.date)
+                ColorPicker("Text Color", selection: $event.textColor)
             }
         }
-        .navigationTitle(event == nil ? "Add Event" : "Edit .\(event?.title ?? "Event")")
+        .navigationTitle(events.contains(event) ? "Edit \(event.title)" : "Add Event")
         .toolbar {
             Button {
                 saveEvent()
@@ -45,26 +51,14 @@ struct EventForm: View {
                 Image(systemName: "checkmark")
             }
         }
-        .onAppear {
-            if let event = event {
-                title = event.title
-                date = event.date
-                textColor = event.textColor
-            }
-        }
     }
     
     // MARK: - Methods
     
     private func saveEvent() {
-        guard !title.trimmingCharacters(in: .whitespaces).isEmpty else { return }
+        guard !event.title.trimmingCharacters(in: .whitespaces).isEmpty else { return }
         
-        let event = Event(id: event?.id ?? UUID(), title: title, date: date, textColor: textColor)
-        
-        if let existingEvent = self.event,
-           let index = events.firstIndex(of: existingEvent) {
-            events[index] = event
-        } else {
+        if !events.contains(event) {
             events.append(event)
         }
         

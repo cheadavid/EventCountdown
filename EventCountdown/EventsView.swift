@@ -30,9 +30,7 @@ struct EventsView: View {
                         EventRow(event: event)
                     }
                 }
-                .onDelete { indexSet in
-                    events.remove(atOffsets: indexSet)
-                }
+                .onDelete(perform: deleteEvents)
             }
             .toolbar {
                 Button {
@@ -51,5 +49,14 @@ struct EventsView: View {
                 }
             }
         }
+    }
+    
+    // MARK: - Methods
+    
+    private func deleteEvents(indexSet: IndexSet) {
+        let sortedEvents = events.sorted()
+        let eventsToDelete = indexSet.map { sortedEvents[$0] }
+        
+        events.removeAll { eventsToDelete.contains($0) }
     }
 }

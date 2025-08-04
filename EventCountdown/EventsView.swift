@@ -27,14 +27,17 @@ struct EventsView: View {
     
     var body: some View {
         NavigationStack(path: $path) {
-            List {
-                ForEach(events.events) { event in
-                    NavigationLink(value: Destination.editEvent(event)) {
-                        EventRow(event: event)
-                    }
-                }
-                .onDelete { indexSet in
-                    events.remove(indexSet)
+            List(events.events) { event in
+                NavigationLink(value: Destination.editEvent(event)) {
+                    EventRow(event: event)
+                        .swipeActions {
+                            Button {
+                                events.remove(event.id)
+                            } label: {
+                                Image(systemName: "trash")
+                            }
+                            .tint(.red)
+                        }
                 }
             }
             .toolbar {

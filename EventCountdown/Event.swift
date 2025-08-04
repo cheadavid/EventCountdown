@@ -65,7 +65,7 @@ class Events {
         events.sort()
     }
     
-    func remove(_ indexSet: IndexSet) {
-        events.remove(atOffsets: indexSet)
+    func remove(_ id: UUID) {
+        events = events.filter { $0.id != id }
     }
 }

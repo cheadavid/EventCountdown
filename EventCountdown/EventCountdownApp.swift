@@ -10,11 +10,16 @@ import SwiftUI
 @main
 struct EventCountdownApp: App {
     
+    // MARK: - States
+    
+    @State private var events = Events(events: [])
+    
     // MARK: - Body
     
     var body: some Scene {
         WindowGroup {
             EventsView()
+                .environment(events)
         }
     }
 }

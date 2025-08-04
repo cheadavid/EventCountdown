@@ -15,9 +15,12 @@ struct EventsView: View {
         case addEvent, editEvent(Event)
     }
     
+    // MARK: - Environments
+    
+    @Environment(Events.self) private var events
+    
     // MARK: - States
     
-    @State private var events: [Event] = []
     @State private var path = NavigationPath()
     
     // MARK: - Body
@@ -25,12 +28,14 @@ struct EventsView: View {
     var body: some View {
         NavigationStack(path: $path) {
             List {
-                ForEach(events.sorted()) { event in
+                ForEach(events.events) { event in
                     NavigationLink(value: Destination.editEvent(event)) {
                         EventRow(event: event)
                     }
                 }
-                .onDelete(perform: deleteEvents)
+                .onDelete { indexSet in
+                    events.remove(indexSet)
+                }
             }
             .toolbar {
                 Button {
@@ -43,20 +48,13 @@ struct EventsView: View {
             .navigationDestination(for: Destination.self) { destination in
                 switch destination {
                 case .addEvent:
-                    EventForm(events: $events, event: nil)
+                    EventForm(event: nil)
+                        .environment(events)
                 case .editEvent(let event):
-                    EventForm(events: $events, event: event)
+                    EventForm(event: event)
+                        .environment(events)
                 }
             }
         }
-    }
-    
-    // MARK: - Methods
-    
-    private func deleteEvents(indexSet: IndexSet) {
-        let sortedEvents = events.sorted()
-        let eventsToDelete = indexSet.map { sortedEvents[$0] }
-        
-        events.removeAll { eventsToDelete.contains($0) }
     }
 }

@@ -16,7 +16,7 @@ struct EventRow: View {
     // MARK: - Properties
     
     let event: Event
-    let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     let formatter = {
         let f = RelativeDateTimeFormatter()

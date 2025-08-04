@@ -12,10 +12,7 @@ struct EventForm: View {
     // MARK: - Environments
     
     @Environment(\.dismiss) private var dismiss
-    
-    // MARK: - Bindings
-    
-    @Binding var events: [Event]
+    @Environment(Events.self) private var events
     
     // MARK: - States
     
@@ -23,9 +20,7 @@ struct EventForm: View {
     
     // MARK: - Initializers
     
-    init(events: Binding<[Event]>, event: Event?) {
-        _events = events
-        
+    init(event: Event?) {
         if let event = event {
             _event = State(initialValue: event)
         } else {
@@ -37,11 +32,10 @@ struct EventForm: View {
     
     var body: some View {
         Form {
-            Section {
-                TextField("Title", text: $event.title)
-                DatePicker("Date", selection: $event.date)
-                ColorPicker("Text Color", selection: $event.textColor)
-            }
+            TextField("Title", text: $event.title)
+                .foregroundColor($event.textColor.wrappedValue)
+            DatePicker("Date", selection: $event.date)
+            ColorPicker("Text Color", selection: $event.textColor)
         }
         .navigationTitle(events.contains(event) ? "Edit \(event.title)" : "Add Event")
         .toolbar {

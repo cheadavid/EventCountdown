@@ -40,3 +40,32 @@ class Event: Identifiable, Comparable, Hashable {
         hasher.combine(id)
     }
 }
+
+@Observable
+class Events {
+    
+    // MARK: - Properties
+    
+    var events: [Event]
+    
+    // MARK: - Initializers
+    
+    init(events: [Event]) {
+        self.events = events
+    }
+    
+    // MARK: - Methods
+    
+    func contains(_ event: Event) -> Bool {
+        events.contains(event)
+    }
+    
+    func append(_ event: Event) {
+        events.append(event)
+        events.sort()
+    }
+    
+    func remove(_ indexSet: IndexSet) {
+        events.remove(atOffsets: indexSet)
+    }
+}

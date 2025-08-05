@@ -22,7 +22,7 @@ struct EventsView: View {
     
     // MARK: - Queries
     
-    @Query var events: [Event]
+    @Query private var events: [Event]
     
     // MARK: - States
     
@@ -57,10 +57,8 @@ struct EventsView: View {
                 switch destination {
                 case .addEvent:
                     EventForm(event: nil)
-                        .modelContainer(for: Event.self)
                 case .editEvent(let event):
                     EventForm(event: event)
-                        .modelContainer(for: Event.self)
                 }
             }
         }

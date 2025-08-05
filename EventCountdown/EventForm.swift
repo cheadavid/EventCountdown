@@ -17,7 +17,7 @@ struct EventForm: View {
     
     // MARK: - Queries
     
-    @Query private var events: [Event]
+    @Query var events: [Event]
     
     // MARK: - States
     
@@ -29,7 +29,7 @@ struct EventForm: View {
         if let event = event {
             _event = State(initialValue: event)
         } else {
-            _event = State(initialValue: Event(title: "", date: Date(), textColor: .red))
+            _event = State(initialValue: Event(title: "", date: Date()))
         }
     }
     
@@ -38,9 +38,7 @@ struct EventForm: View {
     var body: some View {
         Form {
             TextField("Title", text: $event.title)
-                .foregroundColor($event.textColor.wrappedValue)
             DatePicker("Date", selection: $event.date)
-            ColorPicker("Text Color", selection: $event.textColor)
         }
         .navigationTitle(events.contains(event) ? "Edit \(event.title)" : "Add Event")
         .toolbar {

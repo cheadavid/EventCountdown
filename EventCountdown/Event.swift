@@ -17,14 +17,12 @@ class Event: Identifiable, Comparable, Hashable {
     
     var title: String
     var date: Date
-    var textColor: Color
     
     // MARK: - Initializers
     
-    init(title: String, date: Date, textColor: Color) {
+    init(title: String, date: Date) {
         self.title = title
         self.date = date
-        self.textColor = textColor
     }
     
     // MARK: - Methods

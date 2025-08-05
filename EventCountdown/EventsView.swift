@@ -22,7 +22,7 @@ struct EventsView: View {
     
     // MARK: - Queries
     
-    @Query private var events: [Event]
+    @Query var events: [Event]
     
     // MARK: - States
     

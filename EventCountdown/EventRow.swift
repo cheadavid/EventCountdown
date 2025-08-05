@@ -30,7 +30,6 @@ struct EventRow: View {
     var body: some View {
         VStack() {
             Text(event.title)
-                .foregroundColor(event.textColor)
                 .font(.headline)
             Text(relativeDate)
                 .foregroundColor(.gray)

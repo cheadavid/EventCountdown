@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct EventsView: View {
     
@@ -17,7 +18,11 @@ struct EventsView: View {
     
     // MARK: - Environments
     
-    @Environment(Events.self) private var events
+    @Environment(\.modelContext) private var context
+    
+    // MARK: - Queries
+    
+    @Query private var events: [Event]
     
     // MARK: - States
     
@@ -27,12 +32,12 @@ struct EventsView: View {
     
     var body: some View {
         NavigationStack(path: $path) {
-            List(events.events) { event in
+            List(events) { event in
                 NavigationLink(value: Destination.editEvent(event)) {
                     EventRow(event: event)
                         .swipeActions {
                             Button {
-                                events.remove(event.id)
+                                context.delete(event)
                             } label: {
                                 Image(systemName: "trash")
                             }
@@ -52,10 +57,10 @@ struct EventsView: View {
                 switch destination {
                 case .addEvent:
                     EventForm(event: nil)
-                        .environment(events)
+                        .modelContainer(for: Event.self)
                 case .editEvent(let event):
                     EventForm(event: event)
-                        .environment(events)
+                        .modelContainer(for: Event.self)
                 }
             }
         }

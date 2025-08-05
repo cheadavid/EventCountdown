@@ -6,13 +6,18 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct EventForm: View {
     
     // MARK: - Environments
     
     @Environment(\.dismiss) private var dismiss
-    @Environment(Events.self) private var events
+    @Environment(\.modelContext) private var context
+    
+    // MARK: - Queries
+    
+    @Query private var events: [Event]
     
     // MARK: - States
     
@@ -53,7 +58,7 @@ struct EventForm: View {
         guard !event.title.trimmingCharacters(in: .whitespaces).isEmpty else { return }
         
         if !events.contains(event) {
-            events.append(event)
+            context.insert(event)
         }
         
         dismiss()

@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
-@Observable
+@Model
 class Event: Identifiable, Comparable, Hashable {
     
     // MARK: - Properties
     
-    let id = UUID()
+    var id = UUID()
     
     var title: String
     var date: Date
@@ -38,34 +39,5 @@ class Event: Identifiable, Comparable, Hashable {
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
-    }
-}
-
-@Observable
-class Events {
-    
-    // MARK: - Properties
-    
-    var events: [Event]
-    
-    // MARK: - Initializers
-    
-    init(events: [Event]) {
-        self.events = events
-    }
-    
-    // MARK: - Methods
-    
-    func contains(_ event: Event) -> Bool {
-        events.contains(event)
-    }
-    
-    func append(_ event: Event) {
-        events.append(event)
-        events.sort()
-    }
-    
-    func remove(_ id: UUID) {
-        events = events.filter { $0.id != id }
     }
 }
